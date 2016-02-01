@@ -6,7 +6,7 @@ This lesson will cover how to work with paths, use them when importing modules. 
 
 ## Objectives
 
-1. Describe __dirname, process.cwd() and process.pwd()
+1. Describe `__dirname`, `process.cwd()` and `process.env.PWD`
 1. Describe how to import folders (and why)
 
 
