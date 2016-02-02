@@ -100,6 +100,55 @@ Also, the `PWD` env var is a POSIX (Unix, Linux, Mac OS X) variable which mean i
 
 The `PWD` might be useful on POSIX systems (Unix, Linux, Mac OS X) to get the original value of the current working directory of the process. 
 
+
+## Importing a Folder 
+
+Sometime you need to import a few related files. Let's say you are working with accounts and you have modules to add, delete, update and read accounts:
+
+```
+add-accounts-.js
+read-accounts.js
+update-accounts.js
+delete-accounts.js
+```
+
+In your main file you can import them one by one with `require(FILEPATH)`:
+
+```js
+var addAccounts = require('add-accounts.js')
+var readAccounts = require('read-accounts.js')
+var updateAccounts = require('update-accounts.js')
+var deleteAccounts = require('delete-accounts.js')
+addAccounts()
+readAccounts()
+...
+```
+
+Now let's imagine you have two more files in which you need to use the account functionality. You would repeat the four lines in those files. That's okay until it's not okay. What if instead of existing four file, the new requirement is to add 10 more files. You need to add 10 more lines to each of those three "main" files which import the modules. Or maybe you want to initialize the accounts with some constructor code before performing the action like add, create, delete or update.
+
+You can import the folder like this `var accounts = require('accounts')`. It's not a real folder import, but rather the import of an `index.js` file inside of that folder. So move the account files into a new folder `accounts`, and create `index.js`:
+
+```js
+// Code to initialize accounts
+// will be executed when this module is required
+module.exports = {
+  addAccounts: require('add-accounts.js'),
+  readAcccounts: require('read-accounts.js'),
+  updateAccounts: require('update-accounts.js'),
+  deleteAccounts: require('delete-accounts.js'),
+}
+```
+
+Now change the code in importing files to this:
+
+```js
+var accounts = require('accounts')
+accounts.addAccounts()
+accounts.readAccounts()
+```
+
+This folder pattern is use in npm modules. You create `index.js` and then the folder of a module is an npm name. We require the module by its folder name (which is also its npm name).
+
 ## Resources
 
 1. [Navigating Directories:The CWD, PWD, and CDUP commands](http://www.cs.cf.ac.uk/Dave/Internet/node122.html)
