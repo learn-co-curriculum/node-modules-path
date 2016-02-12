@@ -79,7 +79,7 @@ Knowing the difference between `cwd()` and `__dirname`, which one to choice when
 
 ## process.env.PWD
 
-The `process.env.PWD` is similar to the `process.cwd()` in the value of the absolute path meaning it will be the folder from which you launched the Node process. PWD stands for Print Working Directory. For example, with `$ node node-modules-path/node customers`, the `PWD` variable will be ` /Users/azat/Documents/Code/learn-co`—the same as the value of `process.cwd().
+The `process.env.PWD` is similar to the `process.cwd()` in the value of the absolute path. It will return the value of the directory from which you launched the Node process. PWD stands for Print Working Directory. For example, with `$ node node-modules-path/node customers`, the `PWD` variable will be ` /Users/azat/Documents/Code/learn-co` the same as the value of `process.cwd().
 
 
 However, there are a few differences between `PWD` and `cwd()`. `PWD` is an environment variable and not a function. `PWD` is a call to the command on Unix-like systems:
@@ -94,7 +94,7 @@ You can also print the environment variable from the command line with `echo`:
 $ echo $PWD
 ```
 
-Another difference is that `PWD` can be changed with an assignment as any environment variable, while the current working directory can be changed with `process.chdir()`. Changing `PWD` won't affect the value of `cwd()`.
+Another difference is that `PWD` can be changed with an assignment, just like any environment variable, while the current working directory can be changed with `process.chdir()`. Changing `PWD` won't affect the value of `cwd()`.
 
 Also, the `PWD` env var is a POSIX (Unix, Linux, Mac OS X) variable which mean it won't work on Windows. The `process.cwd()` will work on Windows.
 
@@ -124,9 +124,9 @@ readAccounts()
 ...
 ```
 
-Now let's imagine you have two more files in which you need to use the account functionality. You would repeat the four lines in those files. That's okay until it's not okay. What if instead of existing four file, the new requirement is to add 10 more files. You need to add 10 more lines to each of those three "main" files which import the modules. Or maybe you want to initialize the accounts with some constructor code before performing the action like add, create, delete or update.
+Now let's imagine you have two more files in which you need to use the account functionality. You would repeat the four lines in those files. That's okay until it's not okay. What if instead of requiring four files, the new requirement is to add 10 more files. You need to add 10 more lines to each of those three "main" files which import the modules. Or maybe you want to initialize the accounts with some constructor code before performing the action like add, create, delete or update.
 
-You can import the folder like this `var accounts = require('accounts')`. It's not a real folder import, but rather the import of an `index.js` file inside of that folder. So move the account files into a new folder `accounts`, and create `index.js`:
+You can import the directory like this `var accounts = require('accounts')`. It's not a real directory import, but rather the import of an `index.js` file inside of that directory. So move the account files into a new directory `accounts`, and create `index.js`:
 
 ```js
 // Code to initialize accounts
@@ -147,7 +147,7 @@ accounts.addAccounts()
 accounts.readAccounts()
 ```
 
-This folder pattern is use in npm modules. You create `index.js` and then the folder of a module is an npm name. We require the module by its folder name (which is also its npm name).
+This directory pattern is use in npm modules. You create `index.js` and then the directory of a module is an npm name. We require the module by its directory name (which is also its npm name).
 
 ## Resources
 
