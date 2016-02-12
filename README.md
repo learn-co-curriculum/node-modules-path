@@ -29,7 +29,7 @@ var customers = fs.readFileSync(path.join('data','customers.csv'), {encoding: 'u
 console.log(customers)
 ```
 
-However, if we attempt to run the `customers.js` file from a patent folder with `$ node node-modules-path/customers.js`, the code will produce an error:
+However, if we attempt to run the `customers.js` file from a parent folder with `$ node node-modules-path/customers.js`, the code will produce an error:
 
 ```
 Error: ENOENT: no such file or directory, open 'data/customers.csv'
@@ -46,7 +46,7 @@ console.log(customers)
 
 The script will work from the parent folder now, but I think you see the problem with this approach. Every time we change the folder from which we launch our Node script, we have to modify the source code. This is not a good way to write programs. A better way is to use absolute path, but how do we get it? 
 
-To get an absolute path, there are a method `process.cwd()`, and two properties `__dirname` `process.env.PWD`. They a slightly different. We start with the property `__dirname`, because that's what we need to solve this problem. 
+To get an absolute path, there are is method `process.cwd()`, and two properties `__dirname` `process.env.PWD`. They a slightly different. We start with the property `__dirname`, because that's what we need to solve this problem. 
 
 `__dirname` returns the global path to the location of the code being executed. Our problem is fixed by changing relative path to the CSV file to an absolute one:
 
@@ -74,8 +74,8 @@ In any other location, the `cwd()` will be different from the `__dirname` value,
 
 Knowing the difference between `cwd()` and `__dirname`, which one to choice when? My rule of thumb is:
 
-* Use `__dirname` when working with resources (files, modules, folders) when they are related to your script (e.g., one module), and you know that the relative path from your script is not going to change. For example, if you creating a module, and you want to include a file in that module—you know the relative path to the file will stay the same because you're the creator of the module. Typically developers use `__dirname` when they write applications, and dependency modules.
-* Use `process.cwd()` when working with the folder unrelated to your code. For example, if you are creating a command-line tool which generates a boilerplate code, you want to be able to use the tool in any folder to create new directories and files relative to location in which you launch the tool and not in the location of the tool. Typically developers use `process.cwd()` for command-line tools.
+* Use `__dirname` when working with resources (files, modules, folders) when they are related to your script (e.g., one module), and you know that the relative path from your script is not going to change. For example, if you are creating a module, and you want to include a file in that module, you know the relative path to the file will stay the same because you're the creator of the module. Typically developers use `__dirname` when they write applications, and dependency modules.
+* Use `process.cwd()` when working with a directory unrelated to your code. For example, if you are creating a command-line tool which generates a boilerplate code, you'll want to be able to use the tool in any directory to create new directories and files relative to the location in which you launch the tool and not in the location of the tool. Typically developers use `process.cwd()` for command-line tools.
 
 ## process.env.PWD
 
