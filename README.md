@@ -2,15 +2,6 @@
 
 ## Overview
 
-This lesson will cover how to work with paths, use them when importing modules. We'll also show a code organization technique where you can import folders.
-
-## Objectives
-
-1. Describe `__dirname`, `process.cwd()` and `process.env.PWD`
-1. Describe how to import folders (and why)
-
-
-## Absolute Path with __dirname
 
 Consider the code in which we read a file on Mac OS X. The file is in a `data` folder relative to our script:
 
@@ -20,7 +11,7 @@ var customers = fs.readFileSync('data/customers.csv', {encoding: 'utf8'})
 console.log(customers)
 ```
 
-Unfortunately, this code will break on Windows. This is due to a different path syntax, i.e., `data\customers.csv`. That's why we use `path.join()` which we discussed in one of the previous lessons. This example is in the file `customers.js`:
+Unfortunately, this code will break on Windows. This is due to a different path syntax, i.e., `data\customers.csv`. That's why we use `path.join()`. This example is in the file `customers.js`:
 
 ```js
 var fs = require('fs')
@@ -35,6 +26,8 @@ However, if we attempt to run the `customers.js` file from a parent folder with 
 Error: ENOENT: no such file or directory, open 'data/customers.csv'
 ```
 
+Note: If you're wondering why the heck run it from a parent folder, let us tell you: your application need to be robust, versatile and flexible enough so anyone can run it from anywhere, parent or any other folder. Think about deploying your app to AWS. The Ubuntu script will need to run your app from its location! Another example would be a CLI tool like grunt/gulp/webpack. Developers run them in any location.
+
 The error tells us that there's no such directory and in fact that's true. Our data folder is in `node-modules-path`, and not in its parent folder. One option is to edit the file to reflect the change:
 
 ```
@@ -44,9 +37,23 @@ var customers = fs.readFileSync(path.join('node-modules-path', 'data', 'customer
 console.log(customers)
 ```
 
-The script will work from the parent folder now, but I think you see the problem with this approach. Every time we change the folder from which we launch our Node script, we have to modify the source code. This is not a good way to write programs. A better way is to use absolute path, but how do we get it? 
+The script will work from the parent folder now, but I think you see the problem with this approach. Every time we change the folder from which we launch our Node script, we have to modify the source code. 
+
+How about hard-coding an absolute path? Will work for now, but there's a potential problems with with hard-coded paths when you deploy an app. The absolute path on your computer will be very different from the production absolute path. This will cause issues.
+
+This is not a good way to write programs. A better way is to use a dynamic absolute path, but how do we get it? 
 
 To get an absolute path, there are is method `process.cwd()`, and two properties `__dirname` `process.env.PWD`. They a slightly different. We start with the property `__dirname`, because that's what we need to solve this problem. 
+
+This lesson will cover how to work with paths, use them when importing modules. We'll also show a code organization technique where you can import folders.
+
+## Objectives
+
+1. Work with folders objects and methods such as `__dirname`, `process.cwd()` and `process.env.PWD`
+1. Import folders (and describe why they'd need to)
+
+
+## Working with __dirname
 
 `__dirname` returns the global path to the location of the code being executed. Our problem is fixed by changing relative path to the CSV file to an absolute one:
 
@@ -64,7 +71,7 @@ $ node customers.js
 $ node node-modules-path/customers.js
 ```
 
-## process.cwd() 
+## Using process.cwd() 
 
 When it comes to `process.cwd()` we get the current working directory of the process. In other words, it's an absolute path to the location from which we launch our script (the script which has the `process.cwd()`). 
 
@@ -72,12 +79,14 @@ In some cases, `process.cwd()` is the same as `__dirname`. It's when we launch t
 
 In any other location, the `cwd()` will be different from the `__dirname` value, e.g., with `$ node node-modules-path/node customers.js`, the value returned by `cwd()` is **different** from the value of `__dirname`.
 
-Knowing the difference between `cwd()` and `__dirname`, which one to choice when? My rule of thumb is:
+Knowing the difference between `cwd()` and `__dirname`, which one to choice when? The best rule of thumb is:
 
 * Use `__dirname` when working with resources (files, modules, folders) when they are related to your script (e.g., one module), and you know that the relative path from your script is not going to change. For example, if you are creating a module, and you want to include a file in that module, you know the relative path to the file will stay the same because you're the creator of the module. Typically developers use `__dirname` when they write applications, and dependency modules.
 * Use `process.cwd()` when working with a directory unrelated to your code. For example, if you are creating a command-line tool which generates a boilerplate code, you'll want to be able to use the tool in any directory to create new directories and files relative to the location in which you launch the tool and not in the location of the tool. Typically developers use `process.cwd()` for command-line tools.
 
-## process.env.PWD
+Let's cover the very close relative to `cwd`, the `process.env.PWD`.
+
+## Understanding process.env.PWD
 
 The `process.env.PWD` is similar to the `process.cwd()` in the value of the absolute path. It will return the value of the directory from which you launched the Node process. PWD stands for Print Working Directory. For example, with `$ node node-modules-path/node customers`, the `PWD` variable will be ` /Users/azat/Documents/Code/learn-co` the same as the value of `process.cwd().
 
@@ -147,7 +156,10 @@ accounts.addAccounts()
 accounts.readAccounts()
 ```
 
-This directory pattern is use in npm modules. You create `index.js` and then the directory of a module is an npm name. We require the module by its directory name (which is also its npm name).
+This folder pattern is used in npm modules. If you require an npm module, you usually require a folder which has `index.js`. The folder name is the same as the module name. For example, the `chai` module is in the `chai` folder and when you require `chai`, Node take the code from `chai/index.js`. 
+
+We hope know you know a bit more how Node imports modules (it does so by importing folders!). That's a good trivial question for your next JavaScript meetup.
+
 
 ## Resources
 
