@@ -26,7 +26,7 @@ However, if we attempt to run the `customers.js` file from a parent folder with 
 Error: ENOENT: no such file or directory, open 'data/customers.csv'
 ```
 
-Note: If you're wondering why the heck run it from a parent folder, let us tell you: your application need to be robust, versatile and flexible enough so anyone can run it from anywhere, parent or any other folder. Think about deploying your app to AWS. The Ubuntu script will need to run your app from its location! Another example would be a CLI tool like grunt/gulp/webpack. Developers run them in any location.
+Note: If you're wondering why the heck run it from a parent folder, your application needs to be robust, versatile and flexible enough so anyone can run it from anywhere, parent or any other folder. Think about deploying your app to AWS. The Ubuntu script will need to run your app from its location! Another example would be a CLI tool like grunt/gulp/webpack. Developers run them in any location.
 
 The error tells us that there's no such directory and in fact that's true. Our data folder is in `node-modules-path`, and not in its parent folder. One option is to edit the file to reflect the change:
 
@@ -39,9 +39,9 @@ console.log(customers)
 
 The script will work from the parent folder now, but I think you see the problem with this approach. Every time we change the folder from which we launch our Node script, we have to modify the source code. 
 
-How about hard-coding an absolute path? Will work for now, but there's a potential problems with with hard-coded paths when you deploy an app. The absolute path on your computer will be very different from the production absolute path. This will cause issues.
+How about hard-coding an absolute path? That will work for now, but there's a potential problems with with hard-coded paths when you deploy an app. The absolute path on your computer will be very different from the production absolute path. This will cause issues.
 
-This is not a good way to write programs. A better way is to use a dynamic absolute path, but how do we get it? 
+Obviously, this is not a good way to write programs. A better way is to use a dynamic absolute path, but how do we get it? 
 
 To get an absolute path, there are is method `process.cwd()`, and two properties `__dirname` `process.env.PWD`. They a slightly different. We start with the property `__dirname`, because that's what we need to solve this problem. 
 
