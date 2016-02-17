@@ -11,7 +11,7 @@ var customers = fs.readFileSync('data/customers.csv', {encoding: 'utf8'})
 console.log(customers)
 ```
 
-Unfortunately, this code will break on Windows. This is due to a different path syntax, i.e., `data\customers.csv`. That's why we use `path.join()`. This example is in the file `customers.js`:
+Unfortunately, this code will break on Windows because of different path syntax (`data\customers.csv`). That's why we use `path.join()`. This example is in the file `customers.js`:
 
 ```js
 var fs = require('fs')
@@ -20,7 +20,7 @@ var customers = fs.readFileSync(path.join('data','customers.csv'), {encoding: 'u
 console.log(customers)
 ```
 
-However, if we attempt to run the `customers.js` file from a parent folder with `$ node node-modules-path/customers.js`, the code will produce an error:
+However, if we attempt to run the `customers.js` file from a parent folder with `node node-modules-path/customers.js`, the code will produce an error:
 
 ```
 Error: ENOENT: no such file or directory, open 'data/customers.csv'
@@ -67,17 +67,17 @@ console.log(customers)
 Yay! Try to run this code on your own from different locations like:
 
 ```
-$ node customers.js
-$ node node-modules-path/customers.js
+node customers.js
+node node-modules-path/customers.js
 ```
 
 ## Using process.cwd() 
 
 When it comes to `process.cwd()` we get the current working directory of the process. In other words, it's an absolute path to the location from which we launch our script (the script which has the `process.cwd()`). 
 
-In some cases, `process.cwd()` is the same as `__dirname`. It's when we launch the script from the folder in which the script is located, e.g., with `$ node customers.js` the value returned by `cwd()` is **the same** as the value of `__dirname`. 
+In some cases, `process.cwd()` is the same as `__dirname`. It's when we launch the script from the folder in which the script is located, e.g., with `node customers.js` the value returned by `cwd()` is **the same** as the value of `__dirname`. 
 
-In any other location, the `cwd()` will be different from the `__dirname` value, e.g., with `$ node node-modules-path/node customers.js`, the value returned by `cwd()` is **different** from the value of `__dirname`.
+In any other location, the `cwd()` will be different from the `__dirname` value, e.g., with `node node-modules-path/node customers.js`, the value returned by `cwd()` is **different** from the value of `__dirname`.
 
 Knowing the difference between `cwd()` and `__dirname`, which one to choice when? The best rule of thumb is:
 
@@ -88,19 +88,19 @@ Let's cover the very close relative to `cwd`, the `process.env.PWD`.
 
 ## Understanding process.env.PWD
 
-The `process.env.PWD` is similar to the `process.cwd()` in the value of the absolute path. It will return the value of the directory from which you launched the Node process. PWD stands for Print Working Directory. For example, with `$ node node-modules-path/node customers`, the `PWD` variable will be ` /Users/azat/Documents/Code/learn-co` the same as the value of `process.cwd().
+The `process.env.PWD` is similar to the `process.cwd()` in the value of the absolute path. It will return the value of the directory from which you launched the Node process. PWD stands for Print Working Directory. For example, with `node node-modules-path/node customers`, the `PWD` variable will be ` /Users/azat/Documents/Code/learn-co` the same as the value of `process.cwd().
 
 
 However, there are a few differences between `PWD` and `cwd()`. `PWD` is an environment variable and not a function. `PWD` is a call to the command on Unix-like systems:
 
 ```
-$ pwd
+pwd
 ```
 
 You can also print the environment variable from the command line with `echo`:
 
 ```
-$ echo $PWD
+echo $PWD
 ```
 
 Another difference is that `PWD` can be changed with an assignment, just like any environment variable, while the current working directory can be changed with `process.chdir()`. Changing `PWD` won't affect the value of `cwd()`.
