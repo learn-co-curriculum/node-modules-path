@@ -1,7 +1,12 @@
 # Paths, Folders and Modules
 
-## Overview
+## Objectives
 
+1. Work with folders objects and methods such as `__dirname`, `process.cwd()` and `process.env.PWD`
+1. Import folders (and describe why they'd need to)
+
+
+## Overview
 
 Consider the code in which we read a file on Mac OS X. The file is in a `data` folder relative to our script:
 
@@ -43,15 +48,9 @@ How about hard-coding an absolute path? That will work for now, but there's a po
 
 Obviously, this is not a good way to write programs. A better way is to use a dynamic absolute path, but how do we get it? 
 
-To get an absolute path, there are is method `process.cwd()`, and two properties `__dirname` `process.env.PWD`. They a slightly different. We start with the property `__dirname`, because that's what we need to solve this problem. 
+To get an absolute path, there are is method `process.cwd()`, and two properties `__dirname` `process.env.PWD`. They are slightly different. We start with the property `__dirname`, because that's what we need to solve this problem. 
 
 This lesson will cover how to work with paths, use them when importing modules. We'll also show a code organization technique where you can import folders.
-
-## Objectives
-
-1. Work with folders objects and methods such as `__dirname`, `process.cwd()` and `process.env.PWD`
-1. Import folders (and describe why they'd need to)
-
 
 ## Working with __dirname
 
@@ -135,7 +134,7 @@ readAccounts()
 
 Now let's imagine you have two more files in which you need to use the account functionality. You would repeat the four lines in those files. That's okay until it's not okay. What if instead of requiring four files, the new requirement is to add 10 more files. You need to add 10 more lines to each of those three "main" files which import the modules. Or maybe you want to initialize the accounts with some constructor code before performing the action like add, create, delete or update.
 
-You can import the directory like this `var accounts = require('accounts')`. It's not a real directory import, but rather the import of an `index.js` file inside of that directory. So move the account files into a new directory `accounts`, and create `index.js`:
+You can import the directory like this `var accounts = require('accounts')`. It's not a real directory import, but rather the import of an `index.js` file inside of that directory. Go ahead and move the account files into a new directory `accounts`, and create `index.js`:
 
 ```js
 // Code to initialize accounts
@@ -158,7 +157,7 @@ accounts.readAccounts()
 
 This folder pattern is used in npm modules. If you require an npm module, you usually require a folder which has `index.js`. The folder name is the same as the module name. For example, the `chai` module is in the `chai` folder and when you require `chai`, Node take the code from `chai/index.js`. 
 
-We hope know you know a bit more how Node imports modules (it does so by importing folders!). That's a good trivial question for your next JavaScript meetup.
+We hope know you know a bit more how Node imports modules (it does so by importing directories!). That's a good trivia question for your next JavaScript meetup.
 
 
 ## Resources
