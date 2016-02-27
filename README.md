@@ -42,17 +42,17 @@ var customers = fs.readFileSync(path.join('node-modules-path', 'data', 'customer
 console.log(customers)
 ```
 
-The script will work from the parent folder now, but I think you see the problem with this approach. Every time we change the folder from which we launch our Node script, we have to modify the source code. 
+The script will work from the parent folder now, but I think you see the problem with this approach. Every time we change the folder from which we launch our Node script, we have to modify the source code.
 
 How about hard-coding an absolute path? That will work for now, but there's a potential problems with with hard-coded paths when you deploy an app. The absolute path on your computer will be very different from the production absolute path. This will cause issues.
 
-Obviously, this is not a good way to write programs. A better way is to use a dynamic absolute path, but how do we get it? 
+Obviously, this is not a good way to write programs. A better way is to use a dynamic absolute path, but how do we get it?
 
-To get an absolute path, there are is method `process.cwd()`, and two properties `__dirname` `process.env.PWD`. They are slightly different. We start with the property `__dirname`, because that's what we need to solve this problem. 
+To get an absolute path, there are is method `process.cwd()`, and two properties `__dirname` `process.env.PWD`. They are slightly different. We start with the property `__dirname`, because that's what we need to solve this problem.
 
 This lesson will cover how to work with paths, use them when importing modules. We'll also show a code organization technique where you can import folders.
 
-## Working with __dirname
+## Working with `__dirname`
 
 `__dirname` returns the global path to the location of the code being executed. Our problem is fixed by changing relative path to the CSV file to an absolute one:
 
@@ -70,11 +70,11 @@ node customers.js
 node node-modules-path/customers.js
 ```
 
-## Using process.cwd() 
+## Using process.cwd()
 
-When it comes to `process.cwd()` we get the current working directory of the process. In other words, it's an absolute path to the location from which we launch our script (the script which has the `process.cwd()`). 
+When it comes to `process.cwd()` we get the current working directory of the process. In other words, it's an absolute path to the location from which we launch our script (the script which has the `process.cwd()`).
 
-In some cases, `process.cwd()` is the same as `__dirname`. It's when we launch the script from the folder in which the script is located, e.g., with `node customers.js` the value returned by `cwd()` is **the same** as the value of `__dirname`. 
+In some cases, `process.cwd()` is the same as `__dirname`. It's when we launch the script from the folder in which the script is located, e.g., with `node customers.js` the value returned by `cwd()` is **the same** as the value of `__dirname`.
 
 In any other location, the `cwd()` will be different from the `__dirname` value, e.g., with `node node-modules-path/node customers.js`, the value returned by `cwd()` is **different** from the value of `__dirname`.
 
@@ -106,15 +106,15 @@ Another difference is that `PWD` can be changed with an assignment, just like an
 
 Also, the `PWD` env var is a POSIX (Unix, Linux, Mac OS X) variable which mean it won't work on Windows. The `process.cwd()` will work on Windows.
 
-The `PWD` might be useful on POSIX systems (Unix, Linux, Mac OS X) to get the original value of the current working directory of the process. 
+The `PWD` might be useful on POSIX systems (Unix, Linux, Mac OS X) to get the original value of the current working directory of the process.
 
 
-## Importing a Folder 
+## Importing a Folder
 
 Sometime you need to import a few related files. Let's say you are working with accounts and you have modules to add, delete, update and read accounts:
 
 ```
-add-accounts-.js
+add-accounts.js
 read-accounts.js
 update-accounts.js
 delete-accounts.js
@@ -147,7 +147,7 @@ module.exports = {
 }
 ```
 
-Now change the code in importing files to this:
+Now change the code in the file which imports the module to this:
 
 ```js
 var accounts = require('accounts')
@@ -155,7 +155,7 @@ accounts.addAccounts()
 accounts.readAccounts()
 ```
 
-This folder pattern is used in npm modules. If you require an npm module, you usually require a folder which has `index.js`. The folder name is the same as the module name. For example, the `chai` module is in the `chai` folder and when you require `chai`, Node take the code from `chai/index.js`. 
+This folder pattern is used in npm modules. If you require an npm module, you usually require a folder which has `index.js`. The folder name is the same as the module name. For example, the `chai` module is in the `chai` folder and when you require `chai`, Node take the code from `chai/index.js`.
 
 We hope know you know a bit more how Node imports modules (it does so by importing directories!). That's a good trivia question for your next JavaScript meetup.
 
